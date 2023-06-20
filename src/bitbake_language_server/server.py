@@ -31,11 +31,13 @@ def get_document(
 ) -> dict[str, str]:
     r"""Get document. ``builtin`` will use builtin bitbake.json. ``cache``
     will generate a cache from
-    `<https://www.sublimetext.com/docs/scope_naming.html>`_. ``web`` is same as
-    ``cache`` except it doesn't generate cache. We use ``builtin`` as default.
+    `<https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-ref-variables.html>`_.
+    ``web`` is same as ``cache`` except it doesn't generate cache. We use
+    ``builtin`` as default.
     If you want to get the latest result from
-    `<https://www.sublimetext.com/docs/scope_naming.html>`_, you need to
-    install `beautifulsoup4 <https://pypi.org/project/beautifulsoup4>` by
+    `<https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-ref-variables.html>`_,
+    you need to install
+    `beautifulsoup4 <https://pypi.org/project/beautifulsoup4>` by
     ``pip install 'bitbake-language-server[web]'``.
 
     :param method:
@@ -69,7 +71,7 @@ def get_document(
 
 
 class BitbakeLanguageServer(LanguageServer):
-    r"""Sublime syntax language server."""
+    r"""Bitbake language server."""
 
     def __init__(self, *args: Any) -> None:
         r"""Init.
