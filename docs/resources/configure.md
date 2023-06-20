@@ -1,8 +1,5 @@
 # Configure
 
-See customization in
-<https://bitbake-language-server.readthedocs.io/en/latest/api/bitbake-language-server.html#bitbake_language_server.server.get_document>.
-
 ## (Neo)[Vim](https://www.vim.org)
 
 ### [coc.nvim](https://github.com/neoclide/coc.nvim)
