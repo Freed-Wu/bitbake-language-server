@@ -31,14 +31,9 @@ def get_document(
 ) -> dict[str, str]:
     r"""Get document. ``builtin`` will use builtin bitbake.json. ``cache``
     will generate a cache from
-    `<https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-ref-variables.html>`_.
+    `<https://raw.githubusercontent.com/openembedded/openembedded-core/master/meta/conf/documentation.conf>`_.
     ``web`` is same as ``cache`` except it doesn't generate cache. We use
     ``builtin`` as default.
-    If you want to get the latest result from
-    `<https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-ref-variables.html>`_,
-    you need to install
-    `beautifulsoup4 <https://pypi.org/project/beautifulsoup4>` by
-    ``pip install 'bitbake-language-server[web]'``.
 
     :param method:
     :type method: Literal["builtin", "cache", "web"]
