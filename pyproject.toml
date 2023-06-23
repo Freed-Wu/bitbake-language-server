@@ -64,9 +64,6 @@ file = "requirements.txt"
 # begin: scripts/update-pyproject.toml.pl
 [tool.setuptools.dynamic.optional-dependencies.dev]
 file = "requirements/dev.txt"
-
-[tool.setuptools.dynamic.optional-dependencies.web]
-file = "requirements/web.txt"
 # end: scripts/update-pyproject.toml.pl
 
 [tool.setuptools_scm]
