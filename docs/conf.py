@@ -3,18 +3,13 @@ r"""Configure the Sphinx documentation builder.
 https://www.sphinx-doc.org/en/master/usage/configuration.html
 """
 from bitbake_language_server import __version__ as version  # type: ignore
-
-# from bitbake_language_server._metainfo import (  # type: ignore
-#     author,
-#     copyright,
-#     project,
-# )
+from bitbake_language_server._metainfo import (  # type: ignore
+    author,
+    copyright,
+    project,
+)
 
 __all__ = ["version", "author", "copyright", "project"]
-
-author = "Wu Zhenyu"
-copyright = "2023"
-project = "bitbake-language-server"
 
 # -- Path setup --------------------------------------------------------------
 
