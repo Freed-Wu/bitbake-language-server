@@ -3,7 +3,7 @@
 ## [AUR](https://aur.archlinux.org/packages/bitbake-language-server)
 
 ```sh
-yay -S python-bitbake-language-server
+yay -S bitbake-language-server
 ```
 
 ## [NUR](https://nur.nix-community.org/repos/Freed-Wu)
