@@ -5,15 +5,21 @@ import json
 import os
 import re
 from typing import Any, Literal, Tuple
+from urllib.parse import unquote, urlparse
 
 from lsprotocol.types import (
     INITIALIZE,
     TEXT_DOCUMENT_COMPLETION,
+    TEXT_DOCUMENT_DID_CHANGE,
+    TEXT_DOCUMENT_DID_OPEN,
     TEXT_DOCUMENT_HOVER,
     CompletionItem,
     CompletionItemKind,
     CompletionList,
     CompletionParams,
+    Diagnostic,
+    DiagnosticSeverity,
+    DidChangeTextDocumentParams,
     Hover,
     InitializeParams,
     MarkupContent,
@@ -24,6 +30,8 @@ from lsprotocol.types import (
 )
 from platformdirs import user_cache_dir
 from pygls.server import LanguageServer
+
+from .diagnostics import diagnostic
 
 
 def get_document(
@@ -134,6 +142,34 @@ class BitbakeLanguageServer(LanguageServer):
                 if x.startswith(token)
             ]
             return CompletionList(is_incomplete=False, items=items)
+
+        @self.feature(TEXT_DOCUMENT_DID_OPEN)
+        @self.feature(TEXT_DOCUMENT_DID_CHANGE)
+        def did_change(params: DidChangeTextDocumentParams) -> None:
+            r"""Did change.
+
+            :param params:
+            :type params: DidChangeTextDocumentParams
+            :rtype: None
+            """
+            doc = self.workspace.get_document(params.text_document.uri)
+            diagnostics = [
+                Diagnostic(
+                    range=Range(
+                        Position(node.start_point[0], node.start_point[1]),
+                        Position(node.end_point[0], node.end_point[1]),
+                    ),
+                    message=message,
+                    severity=getattr(DiagnosticSeverity, severity),
+                    source="bitbake-language-server",
+                )
+                for node, message, severity in diagnostic(
+                    os.path.dirname(
+                        unquote(urlparse(params.text_document.uri).path)
+                    ),
+                )
+            ]
+            self.publish_diagnostics(doc.uri, diagnostics)
 
     def _cursor_line(self, uri: str, position: Position) -> str:
         r"""Cursor line.
