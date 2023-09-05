@@ -42,6 +42,7 @@ Language server for
 
 - [x] document hover
 - [x] completion
+- [x] diagnostic
 
 ![document hover](https://github.com/Freed-Wu/requirements-language-server/assets/32936898/716fe5a4-a7ed-457d-8b55-d13689c97f76)
 
