@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 include(FetchContent)
-FetchContent_Declare(tree-sitter-bitbake GIT_REPOSITORY https://github.com/amaanq/tree-sitter-bitbake)
+FetchContent_Declare(
+  tree-sitter-bitbake
+  URL https://github.com/amaanq/tree-sitter-bitbake/archive/refs/tags/v1.0.0.tar.gz
+  URL_HASH SHA256=2ecddb6e00764fd0cecf7ad5aa732c5830147188f6f1a9bd6cbbaf328bf1bb79)
 FetchContent_MakeAvailable(tree-sitter-bitbake)
 include_directories(${tree-sitter-bitbake_SOURCE_DIR}/src)
 add_library(parser SHARED ${tree-sitter-bitbake_SOURCE_DIR}/src/parser.c)
