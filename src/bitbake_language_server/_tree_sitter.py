@@ -12,7 +12,7 @@ lib = glob(
         "*",
     )
 )[0]
-MAKE_LANGUAGE = Language(lib, "make")
+BITBAKE_LANGUAGE = Language(lib, "bitbake")
 
 
 def get_parser(language: Language | None = None) -> Parser:
@@ -23,7 +23,7 @@ def get_parser(language: Language | None = None) -> Parser:
     :rtype: Parser
     """
     if language is None:
-        language = MAKE_LANGUAGE
+        language = BITBAKE_LANGUAGE
     parser = Parser()
     parser.set_language(language)
     return parser
