@@ -34,7 +34,7 @@ endif
 
 ```lua
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
-  pattern = { "*.bb" "*.bbappend" "*.bbclass" "*.inc" "conf/*.conf" },
+  pattern = { "*.bb", "*.bbappend", "*.bbclass", "*.inc", "conf/*.conf" },
   callback = function()
     vim.lsp.start({
       name = "bitbake",
