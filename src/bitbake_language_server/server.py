@@ -1,10 +1,12 @@
 r"""Server
 ==========
 """
+import os
 import re
 from typing import Any
 
 from lsprotocol.types import (
+    INITIALIZE,
     TEXT_DOCUMENT_COMPLETION,
     TEXT_DOCUMENT_HOVER,
     CompletionItem,
@@ -12,15 +14,16 @@ from lsprotocol.types import (
     CompletionList,
     CompletionParams,
     Hover,
+    InitializeParams,
     MarkupContent,
     MarkupKind,
     Position,
     Range,
     TextDocumentPositionParams,
 )
+from oelint_parser.cls_item import Variable
+from oelint_parser.cls_stash import Stash
 from pygls.server import LanguageServer
-
-from .utils import get_schema
 
 
 class BitbakeLanguageServer(LanguageServer):
@@ -36,6 +39,14 @@ class BitbakeLanguageServer(LanguageServer):
         :rtype: None
         """
         super().__init__(*args, **kwargs)
+        self.stash = Stash(quiet=True)
+
+        @self.feature(INITIALIZE)
+        async def initialize(params: InitializeParams) -> None:
+            if params.root_path:
+                path = os.path.join(params.root_path, "conf/bitbake.conf")
+                if os.path.exists(path):
+                    self.stash.AddFile(path)
 
         @self.feature(TEXT_DOCUMENT_HOVER)
         def hover(params: TextDocumentPositionParams) -> Hover | None:
@@ -48,13 +59,29 @@ class BitbakeLanguageServer(LanguageServer):
             word, _range = self._cursor_word(
                 params.text_document.uri, params.position, True
             )
-            doc = get_schema().get(word)
-            if not doc:
-                return None
-            return Hover(
-                MarkupContent(MarkupKind.PlainText, doc),
-                _range,
+            items = self.stash.GetItemsFor(
+                attribute=Variable.ATTR_VAR, attributeValue=word
             )
+            value = ""
+            doc = ""
+            flags = {}
+            if items == []:
+                return None
+            for item in items:
+                if item.Flag == "":
+                    value = item.VarValueStripped
+                elif item.Flag == "doc":
+                    doc = item.VarValueStripped
+                else:
+                    flags[item.Flag] = item.VarValueStripped
+            content = ""
+            for flag, text in flags.items():
+                content += f"{flag}: {text}\n"
+            content = f"""
+{value}
+{content}---
+{doc}"""
+            return Hover(MarkupContent(MarkupKind.Markdown, content), _range)
 
         @self.feature(TEXT_DOCUMENT_COMPLETION)
         def completions(params: CompletionParams) -> CompletionList:
@@ -69,13 +96,13 @@ class BitbakeLanguageServer(LanguageServer):
             )
             items = [
                 CompletionItem(
-                    x,
+                    item.VarName,
                     kind=CompletionItemKind.Variable,
-                    documentation=doc,
-                    insert_text=x,
+                    documentation=item.VarValueStripped,
+                    insert_text=item.VarName,
                 )
-                for x, doc in get_schema().items()
-                if x.startswith(word)
+                for item in self.stash.GetItemsFor(classifier="Variable")
+                if item.VarName.startswith(word)
             ]
             return CompletionList(False, items)
 
