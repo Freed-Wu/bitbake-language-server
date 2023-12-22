@@ -2,4 +2,5 @@
 # get the latest result from
 # `<https://raw.githubusercontent.com/openembedded/openembedded-core/master/meta/conf/documentation.conf>`
 
-bitbake
+oelint-parser
+tree-sitter-lsp
