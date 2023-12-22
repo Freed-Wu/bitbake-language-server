@@ -1,6 +1,6 @@
 [build-system]
-requires = ["scikit-build-core"]
-build-backend = "scikit_build_core.build"
+requires = ["setuptools_scm[toml] >= 6.2", "setuptools-generate >= 0.0.6"]
+build-backend = "setuptools.build_meta"
 
 # https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
 [project]
@@ -9,7 +9,7 @@ description = "bitbake language server"
 readme = "README.md"
 # type_a | type_b
 requires-python = ">= 3.10"
-keywords = ["bitbake", "language server"]
+keywords = [""]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
@@ -21,22 +21,13 @@ classifiers = [
   "Operating System :: MacOS",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-# dynamic = ["version", "dependencies", "optional-dependencies"]
-# https://github.com/pypa/twine/issues/753
-dynamic = ["version"]
-dependencies = ["platformdirs", "pygls", "tree-sitter"]
-
-[project.optional-dependencies]
-dev = ["pytest-cov"]
-web = ["bitbake"]
+dynamic = ["version", "dependencies", "optional-dependencies"]
 
 [[project.authors]]
 name = "Wu Zhenyu"
@@ -54,18 +45,13 @@ Source = "https://github.com/Freed-Wu/bitbake-language-server"
 [project.scripts]
 bitbake-language-server = "bitbake_language_server.__main__:main"
 
-[tool.scikit-build]
-experimental = true
+[tool.setuptools.package-data]
+bitbake_language_server = ["py.typed", "assets/**"]
 
-[tool.scikit-build.metadata.version]
-provider = "scikit_build_core.metadata.setuptools_scm"
-
-[tool.scikit-build.sdist]
-include = ["src/bitbake_language_server/_version.py"]
-
-[[tool.scikit-build.generate]]
-path = "bitbake_language_server/_metainfo.py"
-template-path = "templates/metainfo.py"
+[tool.setuptools.data-files]
+"share/man/man1" = ["sdist/bitbake-language-server.1"]
+"share/bash-completion/completions" = ["sdist/bitbake-language-server"]
+"share/zsh/site-functions" = ["sdist/_bitbake-language-server"]
 
 [tool.setuptools.dynamic.dependencies]
 file = "requirements.txt"
@@ -74,12 +60,15 @@ file = "requirements.txt"
 [tool.setuptools.dynamic.optional-dependencies.dev]
 file = "requirements/dev.txt"
 
-[tool.setuptools.dynamic.optional-dependencies.web]
-file = "requirements/web.txt"
+[tool.setuptools.dynamic.optional-dependencies.misc]
+file = "requirements/misc.txt"
 # end: scripts/update-pyproject.toml.pl
 
 [tool.setuptools_scm]
 write_to = "src/bitbake_language_server/_version.py"
+
+[tool.setuptools-generate]
+write-to = "src/bitbake_language_server/_metainfo.py"
 
 [tool.mdformat]
 number = true
@@ -106,7 +95,7 @@ exclude_lines = [
 ]
 
 [tool.bandit.assert_used]
-skips = ["*_test.py", "test_*.py"]
+skips = ["*_test.py", "*/test_*.py"]
 
 [tool.cibuildwheel]
 archs = ["all"]

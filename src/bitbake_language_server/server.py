@@ -1,23 +1,16 @@
 r"""Server
 ==========
 """
-import os
 import re
 from typing import Any
-from urllib.parse import unquote, urlparse
 
 from lsprotocol.types import (
     TEXT_DOCUMENT_COMPLETION,
-    TEXT_DOCUMENT_DID_CHANGE,
-    TEXT_DOCUMENT_DID_OPEN,
     TEXT_DOCUMENT_HOVER,
     CompletionItem,
     CompletionItemKind,
     CompletionList,
     CompletionParams,
-    Diagnostic,
-    DiagnosticSeverity,
-    DidChangeTextDocumentParams,
     Hover,
     MarkupContent,
     MarkupKind,
@@ -27,7 +20,6 @@ from lsprotocol.types import (
 )
 from pygls.server import LanguageServer
 
-from .diagnostics import diagnostic
 from .utils import get_schema
 
 
@@ -44,32 +36,6 @@ class BitbakeLanguageServer(LanguageServer):
         :rtype: None
         """
         super().__init__(*args, **kwargs)
-
-        @self.feature(TEXT_DOCUMENT_DID_OPEN)
-        @self.feature(TEXT_DOCUMENT_DID_CHANGE)
-        def did_change(params: DidChangeTextDocumentParams) -> None:
-            r"""Did change.
-
-            :param params:
-            :type params: DidChangeTextDocumentParams
-            :rtype: None
-            """
-            doc = self.workspace.get_document(params.text_document.uri)
-            diagnostics = [
-                Diagnostic(
-                    Range(
-                        Position(*node.start_point), Position(*node.end_point)
-                    ),
-                    message,
-                    getattr(DiagnosticSeverity, severity),
-                )
-                for node, message, severity in diagnostic(
-                    os.path.dirname(
-                        unquote(urlparse(params.text_document.uri).path)
-                    ),
-                )
-            ]
-            self.publish_diagnostics(doc.uri, diagnostics)
 
         @self.feature(TEXT_DOCUMENT_HOVER)
         def hover(params: TextDocumentPositionParams) -> Hover | None:
