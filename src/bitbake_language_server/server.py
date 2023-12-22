@@ -82,7 +82,7 @@ class BitbakeLanguageServer(LanguageServer):
             word, _range = self._cursor_word(
                 params.text_document.uri, params.position, True
             )
-            doc = get_schema().get(word[0])
+            doc = get_schema().get(word)
             if not doc:
                 return None
             return Hover(
@@ -105,10 +105,10 @@ class BitbakeLanguageServer(LanguageServer):
                 CompletionItem(
                     x,
                     kind=CompletionItemKind.Variable,
-                    documentation=get_schema()[x],
+                    documentation=doc,
                     insert_text=x,
                 )
-                for x in get_schema()
+                for x, doc in get_schema().items()
                 if x.startswith(word)
             ]
             return CompletionList(False, items)
