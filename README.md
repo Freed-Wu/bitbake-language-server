@@ -40,9 +40,10 @@
 Language server for
 [bitbake](https://docs.yoctoproject.org/bitbake/index.html).
 
-- [x] document hover
-- [x] completion
-- [x] diagnostic
+- [ ] [Diagnostic](https://microsoft.github.io/language-server-protocol/specifications/specification-current#diagnostic)
+- [ ] [Document Link](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_documentLink)
+- [x] [Hover](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_hover)
+- [x] [Completion](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_completion)
 
 ![document hover](https://github.com/Freed-Wu/requirements-language-server/assets/32936898/716fe5a4-a7ed-457d-8b55-d13689c97f76)
 
