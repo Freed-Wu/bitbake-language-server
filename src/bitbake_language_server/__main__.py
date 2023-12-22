@@ -34,8 +34,7 @@ def get_parser():
 
 def main():
     r"""Parse arguments and provide shell completions."""
-    parser = get_parser()
-    parser.parse_args()
+    args = get_parser().parse_args()
 
     from .server import BitbakeLanguageServer
 

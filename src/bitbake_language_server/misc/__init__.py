@@ -1,6 +1,7 @@
-r"""Api
-=======
+r"""Misc
+========
 """
+from typing import Any
 from urllib import request
 
 import bb
@@ -11,8 +12,8 @@ from bb.parse.parse_py.ConfHandler import feeder
 URI = "https://raw.githubusercontent.com/openembedded/openembedded-core/master/meta/conf/documentation.conf"
 
 
-def init_document() -> dict[str, str]:
-    r"""Init document. Copied from
+def get_schema() -> dict[str, Any]:
+    r"""Get schema. Copied from
     `/usr/lib/python3.11/site-packages/bb/parse/parse_py/ConfHandler.py <https://github.com/openembedded/bitbake/blob/master/lib/bb/parse/parse_py/ConfHandler.py>`_.
 
     :rtype: dict[str, str]
