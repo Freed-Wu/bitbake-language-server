@@ -31,6 +31,7 @@ from lsprotocol.types import (
 )
 from oelint_parser.cls_item import Function, Variable
 from oelint_parser.cls_stash import Stash
+from oelint_parser.parser import find_local_or_in_layer
 from pygls.server import LanguageServer
 from pygls.uris import from_fs_path
 
@@ -88,21 +89,33 @@ class BitbakeLanguageServer(LanguageServer):
                 filename=document.path,
             )
             links = []
+            path = None
             for item in items:
-                links += [
-                    DocumentLink(
-                        Range(
-                            Position(item.InFileLine - 1, 0),
-                            Position(item.InFileLine, 0),
-                        ),
-                        from_fs_path(
-                            os.path.join(
-                                os.path.dirname(document.path),
-                                item.VarValue + ".bbclass",
-                            )
-                        ),
-                    )
-                ]
+                for m in re.finditer(r"[\w-]+", item.Raw):
+                    value = item.Raw[m.start() : m.end()]
+                    if value == "inherit":
+                        continue
+                    for location in {
+                        "classes",
+                        "classes-recipe",
+                        "classes-global",
+                    }:
+                        path = find_local_or_in_layer(
+                            os.path.join(location, value + ".bbclass"),
+                            os.path.dirname(document.path),
+                        )
+                        if path:
+                            links += [
+                                DocumentLink(
+                                    Range(
+                                        Position(
+                                            item.InFileLine - 1, m.start()
+                                        ),
+                                        Position(item.InFileLine - 1, m.end()),
+                                    ),
+                                    from_fs_path(path),
+                                )
+                            ]
             return links
 
         @self.feature(TEXT_DOCUMENT_DEFINITION)
