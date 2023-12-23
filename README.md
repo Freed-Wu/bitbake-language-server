@@ -42,10 +42,11 @@ Language server for
 
 - [ ] [Diagnostic](https://microsoft.github.io/language-server-protocol/specifications/specification-current#diagnostic)
 - [ ] [Document Link](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_documentLink)
+- [x] [Goto Definition](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_definition)
 - [x] [Hover](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_hover)
 - [x] [Completion](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_completion)
 
-![document hover](https://github.com/Freed-Wu/requirements-language-server/assets/32936898/716fe5a4-a7ed-457d-8b55-d13689c97f76)
+![document hover](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/843dda35-4378-4295-83ad-7d5552d37c4f)
 
 ![completion](https://github.com/Freed-Wu/requirements-language-server/assets/32936898/901ade76-5307-45d5-9f91-4b6b8914bccb)
 
