@@ -61,6 +61,8 @@ to know more.
 ## Related Projects
 
 - [oelint-parser](https://github.com/priv-kweihmann/oelint-parser): the parser
-  this project used
+  of this project
 - [vim-bitbake](https://github.com/kergoth/vim-bitbake):
   syntax highlight for vim
+- [vscode-bitbake](https://github.com/savoirfairelinux/vscode-bitbake/):
+  A VS Code extension for bitbake which use tree-sitter as its parser
