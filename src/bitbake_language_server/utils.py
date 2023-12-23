@@ -12,7 +12,7 @@ def render_document(item: Item) -> str:
     :type item: Item
     :rtype: str
     """
-    return f"""<{from_fs_path(item.Origin)}>:{item.Line}:
+    return f"""<{from_fs_path(item.Origin)}>:{item.InFileLine}:
 ```bitbake
 {item.Raw.strip()}
 ```
