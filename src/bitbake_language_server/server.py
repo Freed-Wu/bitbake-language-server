@@ -11,12 +11,15 @@ from lsprotocol.types import (
     TEXT_DOCUMENT_DEFINITION,
     TEXT_DOCUMENT_DID_CHANGE,
     TEXT_DOCUMENT_DID_OPEN,
+    TEXT_DOCUMENT_DOCUMENT_LINK,
     TEXT_DOCUMENT_HOVER,
     CompletionItem,
     CompletionItemKind,
     CompletionList,
     CompletionParams,
     DidChangeTextDocumentParams,
+    DocumentLink,
+    DocumentLinkParams,
     Hover,
     InitializeParams,
     Location,
@@ -26,7 +29,7 @@ from lsprotocol.types import (
     Range,
     TextDocumentPositionParams,
 )
-from oelint_parser.cls_item import Variable
+from oelint_parser.cls_item import Function, Variable
 from oelint_parser.cls_stash import Stash
 from pygls.server import LanguageServer
 from pygls.uris import from_fs_path
@@ -70,6 +73,38 @@ class BitbakeLanguageServer(LanguageServer):
             self.stash.AddFile(document.path)
             self.show_message(f"Add {document.path}")
 
+        @self.feature(TEXT_DOCUMENT_DOCUMENT_LINK)
+        def document_link(params: DocumentLinkParams) -> list[DocumentLink]:
+            r"""Get document links.
+
+            :param params:
+            :type params: DocumentLinkParams
+            :rtype: list[DocumentLink]
+            """
+            document = self.workspace.get_document(params.text_document.uri)
+            items = self.stash.GetItemsFor(
+                attribute=Variable.ATTR_VARRAW,
+                attributeValue="inherit",
+                filename=document.path,
+            )
+            links = []
+            for item in items:
+                links += [
+                    DocumentLink(
+                        Range(
+                            Position(item.InFileLine - 1, 0),
+                            Position(item.InFileLine, 0),
+                        ),
+                        from_fs_path(
+                            os.path.join(
+                                os.path.dirname(document.path),
+                                item.VarValue + ".bbclass",
+                            )
+                        ),
+                    )
+                ]
+            return links
+
         @self.feature(TEXT_DOCUMENT_DEFINITION)
         def definition(params: TextDocumentPositionParams) -> list[Location]:
             r"""Get definition.
@@ -83,6 +118,8 @@ class BitbakeLanguageServer(LanguageServer):
             )
             items = self.stash.GetItemsFor(
                 attribute=Variable.ATTR_VAR, attributeValue=word
+            ) + self.stash.GetItemsFor(
+                attribute=Function.ATTR_FUNCNAME, attributeValue=word
             )
             locations = []
             for item in items:
@@ -92,8 +129,8 @@ class BitbakeLanguageServer(LanguageServer):
                         Location(
                             uri,
                             Range(
-                                Position(item.Line - 1, 0),
-                                Position(item.Line, 0),
+                                Position(item.InFileLine - 1, 0),
+                                Position(item.InFileLine, 0),
                             ),
                         )
                     ]
@@ -112,6 +149,8 @@ class BitbakeLanguageServer(LanguageServer):
             )
             items = self.stash.GetItemsFor(
                 attribute=Variable.ATTR_VAR, attributeValue=word
+            ) + self.stash.GetItemsFor(
+                attribute=Function.ATTR_FUNCNAME, attributeValue=word
             )
             docs = []
             for item in items:
@@ -142,6 +181,19 @@ class BitbakeLanguageServer(LanguageServer):
                 for item in self.stash.GetItemsFor(classifier="Variable")
                 + self.stash.GetItemsFor(classifier="TaskAssignment")
                 if item.VarName.startswith(word)
+            ]
+            items += [
+                CompletionItem(
+                    item.FuncName,
+                    kind=CompletionItemKind.Function,
+                    documentation=MarkupContent(
+                        MarkupKind.Markdown, render_document(item)
+                    ),
+                    insert_text=item.FuncName,
+                )
+                for item in self.stash.GetItemsFor(classifier="Function")
+                + self.stash.GetItemsFor(classifier="PythonBlock")
+                if item.FuncName.startswith(word)
             ]
             return CompletionList(False, items)
 

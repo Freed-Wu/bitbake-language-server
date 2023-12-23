@@ -41,20 +41,24 @@ Language server for
 [bitbake](https://docs.yoctoproject.org/bitbake/index.html).
 
 - [ ] [Diagnostic](https://microsoft.github.io/language-server-protocol/specifications/specification-current#diagnostic)
-- [ ] [Document Link](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_documentLink)
+- [x] [Document Link](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_documentLink)
 - [x] [Goto Definition](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_definition)
 - [x] [Hover](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_hover)
 - [x] [Completion](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_completion)
 
-![document hover](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/843dda35-4378-4295-83ad-7d5552d37c4f)
+A video is [here](https://asciinema.org/a/628560):
 
-![completion](https://github.com/Freed-Wu/requirements-language-server/assets/32936898/901ade76-5307-45d5-9f91-4b6b8914bccb)
+![628560](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/5720403e-7bf4-436c-91aa-578482a7ba07)
+
+![document hover](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/843dda35-4378-4295-83ad-7d5552d37c4f)
 
 Read
 [![readthedocs](https://shields.io/readthedocs/bitbake-language-server)](https://bitbake-language-server.readthedocs.io)
 to know more.
 
-## Similar Projects
+## Related Projects
 
+- [oelint-parser](https://github.com/priv-kweihmann/oelint-parser): the parser
+  this project used
 - [vim-bitbake](https://github.com/kergoth/vim-bitbake):
   syntax highlight for vim
