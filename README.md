@@ -52,6 +52,8 @@ A video is [here](https://asciinema.org/a/628560):
 
 ![document hover](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/843dda35-4378-4295-83ad-7d5552d37c4f)
 
+![document link](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/a61a132f-18cf-42a7-8cef-0dd5d830bc34)
+
 Read
 [![readthedocs](https://shields.io/readthedocs/bitbake-language-server)](https://bitbake-language-server.readthedocs.io)
 to know more.
