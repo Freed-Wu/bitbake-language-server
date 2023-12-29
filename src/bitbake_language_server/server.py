@@ -191,8 +191,9 @@ class BitbakeLanguageServer(LanguageServer):
                     ),
                     insert_text=item.VarName,
                 )
-                for item in self.stash.GetItemsFor(classifier="Variable")
-                + self.stash.GetItemsFor(classifier="TaskAssignment")
+                for item in self.stash.GetItemsFor(
+                    classifier=["Variable", "TaskAssignment"]
+                )
                 if item.VarName.startswith(word)
             ]
             items += [
@@ -204,8 +205,9 @@ class BitbakeLanguageServer(LanguageServer):
                     ),
                     insert_text=item.FuncName,
                 )
-                for item in self.stash.GetItemsFor(classifier="Function")
-                + self.stash.GetItemsFor(classifier="PythonBlock")
+                for item in self.stash.GetItemsFor(
+                    classifier=["Function", "PythonBlock"]
+                )
                 if item.FuncName.startswith(word)
             ]
             return CompletionList(False, items)
