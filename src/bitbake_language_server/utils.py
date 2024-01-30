@@ -1,6 +1,7 @@
 r"""Utils
 =========
 """
+
 from oelint_parser.cls_item import Item
 from pygls.uris import from_fs_path
 
