@@ -1,5 +1,5 @@
 #!/usr/bin/env -S pip install -r
 
-# stash.GetItemsFor(classifier=[])
-oelint-parser >= 2.13.0
+# stash.GetItemsFor(attribute=[])
+oelint-parser >= 3.0.2
 pygls

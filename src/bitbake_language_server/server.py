@@ -1,6 +1,7 @@
 r"""Server
 ==========
 """
+
 import os
 import re
 from typing import Any
@@ -29,9 +30,8 @@ from lsprotocol.types import (
     Range,
     TextDocumentPositionParams,
 )
-from oelint_parser.cls_item import Function, Variable
+from oelint_parser.cls_item import Function, Inherit, Variable
 from oelint_parser.cls_stash import Stash
-from oelint_parser.parser import find_local_or_in_layer
 from pygls.server import LanguageServer
 from pygls.uris import from_fs_path
 
@@ -77,6 +77,7 @@ class BitbakeLanguageServer(LanguageServer):
         @self.feature(TEXT_DOCUMENT_DOCUMENT_LINK)
         def document_link(params: DocumentLinkParams) -> list[DocumentLink]:
             r"""Get document links.
+            Wait `<https://github.com/priv-kweihmann/oelint-parser/issues/189>_`
 
             :param params:
             :type params: DocumentLinkParams
@@ -84,8 +85,7 @@ class BitbakeLanguageServer(LanguageServer):
             """
             document = self.workspace.get_document(params.text_document.uri)
             items = self.stash.GetItemsFor(
-                attribute=Variable.ATTR_VARRAW,
-                attributeValue="inherit",
+                attribute=Inherit.ATTR_STATEMENT,
                 filename=document.path,
             )
             links = []
@@ -100,7 +100,7 @@ class BitbakeLanguageServer(LanguageServer):
                         "classes-recipe",
                         "classes-global",
                     }:
-                        path = find_local_or_in_layer(
+                        path = self.stash.FindLocalOrLayer(
                             os.path.join(location, value + ".bbclass"),
                             os.path.dirname(document.path),
                         )
@@ -130,9 +130,8 @@ class BitbakeLanguageServer(LanguageServer):
                 params.text_document.uri, params.position, True
             )
             items = self.stash.GetItemsFor(
-                attribute=Variable.ATTR_VAR, attributeValue=word
-            ) + self.stash.GetItemsFor(
-                attribute=Function.ATTR_FUNCNAME, attributeValue=word
+                attribute=[Variable.ATTR_VAR, Function.ATTR_FUNCNAME],
+                attributeValue=word,
             )
             locations = []
             for item in items:
@@ -161,9 +160,8 @@ class BitbakeLanguageServer(LanguageServer):
                 params.text_document.uri, params.position, True
             )
             items = self.stash.GetItemsFor(
-                attribute=Variable.ATTR_VAR, attributeValue=word
-            ) + self.stash.GetItemsFor(
-                attribute=Function.ATTR_FUNCNAME, attributeValue=word
+                attribute=[Variable.ATTR_VAR, Function.ATTR_FUNCNAME],
+                attributeValue=word,
             )
             docs = []
             for item in items:
