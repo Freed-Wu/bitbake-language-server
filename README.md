@@ -40,7 +40,7 @@
 Language server for
 [bitbake](https://docs.yoctoproject.org/bitbake/index.html).
 
-- [ ] [Diagnostic](https://microsoft.github.io/language-server-protocol/specifications/specification-current#diagnostic)
+- [x] [Diagnostic](https://microsoft.github.io/language-server-protocol/specifications/specification-current#diagnostic)
 - [x] [Document Link](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_documentLink)
 - [x] [Goto Definition](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_definition)
 - [x] [Hover](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_hover)
@@ -49,6 +49,8 @@ Language server for
 A video is [here](https://asciinema.org/a/628560):
 
 ![628560](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/5720403e-7bf4-436c-91aa-578482a7ba07)
+
+![diagnostic](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/455f9b9c-1985-4b20-aae0-ebc1ead1f7d9)
 
 ![document hover](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/843dda35-4378-4295-83ad-7d5552d37c4f)
 
