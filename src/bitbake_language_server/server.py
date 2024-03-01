@@ -90,7 +90,7 @@ class BitbakeLanguageServer(LanguageServer):
                 severity = {
                     "info": DiagnosticSeverity.Information,
                     "warning": DiagnosticSeverity.Warning,
-                }.get(words[-2], DiagnosticSeverity.Error)
+                }.get(words[2], DiagnosticSeverity.Error)
                 diagnostic = Diagnostic(
                     Range(Position(line - 1, 0), Position(line, 0)),
                     words[-1],

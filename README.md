@@ -40,21 +40,31 @@
 Language server for
 [bitbake](https://docs.yoctoproject.org/bitbake/index.html).
 
+## Features
+
 - [x] [Diagnostic](https://microsoft.github.io/language-server-protocol/specifications/specification-current#diagnostic)
 - [x] [Document Link](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_documentLink)
 - [x] [Goto Definition](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_definition)
 - [x] [Hover](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_hover)
 - [x] [Completion](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_completion)
 
-A video is [here](https://asciinema.org/a/628560):
+A video is [here](https://asciinema.org/a/628560).
 
-![628560](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/5720403e-7bf4-436c-91aa-578482a7ba07)
+### Goto Definition
 
-![diagnostic](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/455f9b9c-1985-4b20-aae0-ebc1ead1f7d9)
+![Goto Definition](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/5720403e-7bf4-436c-91aa-578482a7ba07)
 
-![document hover](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/843dda35-4378-4295-83ad-7d5552d37c4f)
+### Diagnostic
 
-![document link](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/a61a132f-18cf-42a7-8cef-0dd5d830bc34)
+![Diagnostic](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/965de2ad-f5eb-4fba-8d14-cdc69ff49b82)
+
+### Hover
+
+![Hover](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/843dda35-4378-4295-83ad-7d5552d37c4f)
+
+### Document Link
+
+![Document Link](https://github.com/Freed-Wu/bitbake-language-server/assets/32936898/a61a132f-18cf-42a7-8cef-0dd5d830bc34)
 
 Read
 [![readthedocs](https://shields.io/readthedocs/bitbake-language-server)](https://bitbake-language-server.readthedocs.io)
