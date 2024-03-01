@@ -4,6 +4,7 @@ r"""Server
 
 import os
 import re
+import sys
 from typing import Any
 
 from lsprotocol.types import (
@@ -18,6 +19,8 @@ from lsprotocol.types import (
     CompletionItemKind,
     CompletionList,
     CompletionParams,
+    Diagnostic,
+    DiagnosticSeverity,
     DidChangeTextDocumentParams,
     DocumentLink,
     DocumentLinkParams,
@@ -30,12 +33,16 @@ from lsprotocol.types import (
     Range,
     TextDocumentPositionParams,
 )
+from oelint_adv.__main__ import arguments_post, create_argparser
 from oelint_parser.cls_item import Function, Inherit, Variable
 from oelint_parser.cls_stash import Stash
 from pygls.server import LanguageServer
 from pygls.uris import from_fs_path
 
+from .tool import run2
 from .utils import render_document
+
+parser = create_argparser()
 
 
 class BitbakeLanguageServer(LanguageServer):
@@ -73,6 +80,24 @@ class BitbakeLanguageServer(LanguageServer):
             document = self.workspace.get_document(params.text_document.uri)
             self.stash.AddFile(document.path)
             self.show_message(f"Add {document.path}")
+            args = arguments_post(
+                create_argparser().parse_args([sys.argv[0], document.path])
+            )
+            diagnostics = []
+            for issue in run2(args):
+                line = issue[0][1]
+                words = issue[1].split(":")
+                severity = {
+                    "info": DiagnosticSeverity.Information,
+                    "warning": DiagnosticSeverity.Warning,
+                }.get(words[-2], DiagnosticSeverity.Error)
+                diagnostic = Diagnostic(
+                    Range(Position(line - 1, 0), Position(line, 0)),
+                    words[-1],
+                    severity,
+                )
+                diagnostics += [diagnostic]
+            self.publish_diagnostics(params.text_document.uri, diagnostics)
 
         @self.feature(TEXT_DOCUMENT_DOCUMENT_LINK)
         def document_link(params: DocumentLinkParams) -> list[DocumentLink]:

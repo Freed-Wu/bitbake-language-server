@@ -1,5 +1,5 @@
 ---
-exclude: (^templates/.*|.*\.json$)
+exclude: ^templates/.*
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -51,7 +51,7 @@ repos:
     hooks:
       - id: actionlint
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.33.0
+    rev: v1.35.1
     hooks:
       - id: yamllint
   - repo: https://github.com/executablebooks/mdformat
@@ -65,8 +65,9 @@ repos:
           - mdformat-toc
           - mdformat-deflist
           - mdformat-beautysh
-          - mdformat-black
+          - mdformat-ruff
           - mdformat-config
+          - mdformat-web
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.12.1
     hooks:
@@ -74,12 +75,12 @@ repos:
         additional_dependencies:
           - markdown-it-texmath
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.14
+    rev: v0.2.1
     hooks:
       - id: ruff
       - id: ruff-format
   - repo: https://github.com/kumaraditya303/mirrors-pyright
-    rev: v1.1.348
+    rev: v1.1.350
     hooks:
       - id: pyright
 
