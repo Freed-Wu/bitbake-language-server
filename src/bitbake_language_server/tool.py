@@ -31,12 +31,6 @@ def run2(args: argparse.Namespace) -> List[Tuple[Tuple[str, int], str]]:  # type
 
         for r in rules:
             _loaded_ids += [x for x in r.get_ids() if rule_applicable(x)]
-        if not args.quiet:
-            print(
-                "Loaded rules:\n\t{rules}".format(  # noqa: T201 - it's here for a reason
-                    rules="\n\t".join(sorted(_loaded_ids))
-                )
-            )
         issues = []
         groups = group_files(args.files)
         if not any(groups):
