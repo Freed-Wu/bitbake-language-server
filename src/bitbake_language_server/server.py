@@ -77,7 +77,9 @@ class BitbakeLanguageServer(LanguageServer):
             self.stash.AddFile(document.path)
             self.show_message(f"Add {document.path}")
             diagnostics = []
-            for issue in run(create_lib_arguments([document.path])):
+            for issue in run(
+                create_lib_arguments([document.path], quiet=True)
+            ):
                 line = issue[0][1]
                 words = issue[1].split(":")
                 severity = {
