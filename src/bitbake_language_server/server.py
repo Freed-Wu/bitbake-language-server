@@ -59,10 +59,15 @@ class BitbakeLanguageServer(LanguageServer):
         @self.feature(INITIALIZE)
         def initialize(params: InitializeParams) -> None:
             if params.root_path:
-                path = os.path.join(params.root_path, "conf/bitbake.conf")
-                if os.path.exists(path):
-                    self.stash.AddFile(path)
-                    self.show_message(f"Add {path}")
+                for filename in {
+                    "conf/bitbake.conf",
+                    "components/yocto/layers/poky/meta/conf/bitbake.conf",
+                }:
+                    path = os.path.join(params.root_path, filename)
+                    if os.path.exists(path):
+                        self.stash.AddFile(path)
+                        self.show_message(f"Add {path}")
+                        return
 
         @self.feature(TEXT_DOCUMENT_DID_OPEN)
         @self.feature(TEXT_DOCUMENT_DID_CHANGE)
