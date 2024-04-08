@@ -74,7 +74,13 @@ to know more.
 
 - [oelint-parser](https://github.com/priv-kweihmann/oelint-parser): the parser
   of this project
+- [oelint-adv](https://github.com/priv-kweihmann/oelint-adv): the linter of
+  this project
 - [vim-bitbake](https://github.com/kergoth/vim-bitbake):
   syntax highlight for vim
-- [vscode-bitbake](https://github.com/savoirfairelinux/vscode-bitbake/):
-  A VS Code extension for bitbake which use tree-sitter as its parser
+- [language-server-bitbake](https://www.npmjs.com/package/language-server-bitbake):
+  another language server which use tree-sitter as its parser
+- [vscode-bitbake](https://github.com/savoirfairelinux/vscode-bitbake/): a VS
+  Code extension for bitbake which use language-server-bitbake
+- [coc-bitbake](https://github.com/Freed-Wu/coc-bitbake): port vscode-bitbake
+  to vim
