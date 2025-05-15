@@ -14,6 +14,7 @@ from lsprotocol.types import (
     TEXT_DOCUMENT_DID_OPEN,
     TEXT_DOCUMENT_DOCUMENT_LINK,
     TEXT_DOCUMENT_HOVER,
+    WORKSPACE_DID_CHANGE_CONFIGURATION,
     CompletionItem,
     CompletionItemKind,
     CompletionList,
@@ -21,6 +22,7 @@ from lsprotocol.types import (
     Diagnostic,
     DiagnosticSeverity,
     DidChangeTextDocumentParams,
+    DidChangeConfigurationParams,
     DocumentLink,
     DocumentLinkParams,
     Hover,
@@ -58,6 +60,7 @@ class BitbakeLanguageServer(LanguageServer):
 
         @self.feature(INITIALIZE)
         def initialize(params: InitializeParams) -> None:
+            self.rulefile = None
             if params.root_path:
                 for filename in {
                     "conf/bitbake.conf",
@@ -83,7 +86,9 @@ class BitbakeLanguageServer(LanguageServer):
             self.show_message(f"Add {document.path}")
             diagnostics = []
             for issue in run(
-                create_lib_arguments([document.path], quiet=True)
+                create_lib_arguments(
+                    [document.path], rulefile=self.rulefile, quiet=True
+                )
             ):
                 line = issue[0][1]
                 words = issue[1].split(":")
@@ -234,6 +239,21 @@ class BitbakeLanguageServer(LanguageServer):
                 if item.FuncName.startswith(word)
             ]
             return CompletionList(False, items)
+
+        @self.feature(WORKSPACE_DID_CHANGE_CONFIGURATION)
+        def workspace_did_change_config(params: DidChangeConfigurationParams):
+            config = params.settings
+            if opts := config.get("initialization_options"):
+                rulefile = opts.get("rulefile")
+                if rulefile:
+                    rulefilepath = os.path.expanduser(rulefile)
+                    if os.path.exists(rulefilepath):
+                        self.show_message(f"Using rulefile: {rulefilepath}")
+                        self.rulefile = os.path.expanduser(rulefile)
+                    else:
+                        self.show_message_log(
+                            f"Warning: rulefile not found: {rulefilepath}"
+                        )
 
     def _cursor_line(self, uri: str, position: Position) -> str:
         r"""Cursor line.
