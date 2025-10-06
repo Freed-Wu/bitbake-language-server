@@ -2,8 +2,9 @@ r"""Test utils."""
 
 import os
 
-from bitbake_language_server.utils import render_document
 from oelint_parser.cls_stash import Stash
+
+from bitbake_language_server.utils import render_document
 
 stash = Stash()
 test_file = os.path.join(os.path.dirname(__file__), "test.bb")
