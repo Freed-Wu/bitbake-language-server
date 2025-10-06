@@ -69,7 +69,7 @@ class BitbakeLanguageServer(LanguageServer):
                     path = os.path.join(params.root_path, filename)
                     if os.path.exists(path):
                         self.stash.AddFile(path)
-                        self.show_message(f"Add {path}")
+                        self.show_message_log(f"Add {path}")
                         return
 
         @self.feature(TEXT_DOCUMENT_DID_OPEN)
@@ -83,7 +83,7 @@ class BitbakeLanguageServer(LanguageServer):
             """
             document = self.workspace.get_document(params.text_document.uri)
             self.stash.AddFile(document.path)
-            self.show_message(f"Add {document.path}")
+            self.show_message_log(f"Add {document.path}")
             diagnostics = []
             for issue in run(
                 create_lib_arguments(
@@ -248,7 +248,9 @@ class BitbakeLanguageServer(LanguageServer):
                 if rulefile:
                     rulefilepath = os.path.expanduser(rulefile)
                     if os.path.exists(rulefilepath):
-                        self.show_message(f"Using rulefile: {rulefilepath}")
+                        self.show_message_log(
+                            f"Using rulefile: {rulefilepath}"
+                        )
                         self.rulefile = os.path.expanduser(rulefile)
                     else:
                         self.show_message_log(
