@@ -1,4 +1,4 @@
 #!/usr/bin/env -S pip install -r
 
 oelint-adv >= 5.0.0
-pygls
+pygls >= 2.0.0

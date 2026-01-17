@@ -35,12 +35,10 @@ from lsprotocol.types import (
     TextDocumentPositionParams,
 )
 from oelint_adv.core import create_lib_arguments, run
-from oelint_parser.cls_item import Function, Inherit, Variable
+from oelint_parser.cls_item import Function, Inherit, Item, Variable
 from oelint_parser.cls_stash import Stash
-from pygls.server import LanguageServer
+from pygls.lsp.server import LanguageServer
 from pygls.uris import from_fs_path
-
-from .utils import render_document
 
 
 class BitbakeLanguageServer(LanguageServer):
@@ -76,6 +74,7 @@ class BitbakeLanguageServer(LanguageServer):
         @self.feature(TEXT_DOCUMENT_DID_CHANGE)
         def did_change(params: DidChangeTextDocumentParams) -> None:
             r"""Did change.
+            Refer `<https://github.com/priv-kweihmann/oelint-adv#use-as-a-library>_`
 
             :param params:
             :type params: DidChangeTextDocumentParams
@@ -107,7 +106,8 @@ class BitbakeLanguageServer(LanguageServer):
         @self.feature(TEXT_DOCUMENT_DOCUMENT_LINK)
         def document_link(params: DocumentLinkParams) -> list[DocumentLink]:
             r"""Get document links.
-            Wait `<https://github.com/priv-kweihmann/oelint-parser/issues/189>_`
+            `<https://github.com/priv-kweihmann/oelint-parser/issues/189>_`
+            ``item.get_items()`` cannot return the position.
 
             :param params:
             :type params: DocumentLinkParams
@@ -146,6 +146,7 @@ class BitbakeLanguageServer(LanguageServer):
                                     from_fs_path(path),
                                 )
                             ]
+                            break
             return links
 
         @self.feature(TEXT_DOCUMENT_DEFINITION)
@@ -195,7 +196,7 @@ class BitbakeLanguageServer(LanguageServer):
             )
             docs = []
             for item in items:
-                docs += [render_document(item)]
+                docs += [self.render_document(item)]
             content = "\n".join(docs)
             return Hover(MarkupContent(MarkupKind.Markdown, content), _range)
 
@@ -215,7 +216,7 @@ class BitbakeLanguageServer(LanguageServer):
                     item.VarName,
                     kind=CompletionItemKind.Variable,
                     documentation=MarkupContent(
-                        MarkupKind.Markdown, render_document(item)
+                        MarkupKind.Markdown, self.render_document(item)
                     ),
                     insert_text=item.VarName,
                 )
@@ -229,7 +230,7 @@ class BitbakeLanguageServer(LanguageServer):
                     item.FuncName,
                     kind=CompletionItemKind.Function,
                     documentation=MarkupContent(
-                        MarkupKind.Markdown, render_document(item)
+                        MarkupKind.Markdown, self.render_document(item)
                     ),
                     insert_text=item.FuncName,
                 )
@@ -256,6 +257,19 @@ class BitbakeLanguageServer(LanguageServer):
                         self.show_message_log(
                             f"Warning: rulefile not found: {rulefilepath}"
                         )
+
+    @staticmethod
+    def render_document(item: Item) -> str:
+        r"""Render document.
+
+        :param item:
+        :type item: Item
+        :rtype: str
+        """
+        return f"""<{from_fs_path(item.Origin)}>:{item.InFileLine}:
+    ```bitbake
+    {item.Raw.strip()}
+    ```"""
 
     def _cursor_line(self, uri: str, position: Position) -> str:
         r"""Cursor line.
