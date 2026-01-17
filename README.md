@@ -48,7 +48,7 @@ Language server for
 - [x] [Hover](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_hover)
 - [x] [Completion](https://microsoft.github.io/language-server-protocol/specifications/specification-current#textDocument_completion)
 
-A video is [here](https://asciinema.org/a/628560).
+[A video](https://asciinema.org/a/628560).
 
 ### Goto Definition
 
@@ -70,17 +70,16 @@ Read
 [![readthedocs](https://shields.io/readthedocs/bitbake-language-server)](https://bitbake-language-server.readthedocs.io)
 to know more.
 
-## Related Projects
+## Similar Projects
 
-- [oelint-parser](https://github.com/priv-kweihmann/oelint-parser): the parser
-  of this project
-- [oelint-adv](https://github.com/priv-kweihmann/oelint-adv): the linter of
-  this project
-- [vim-bitbake](https://github.com/kergoth/vim-bitbake):
-  syntax highlight for vim
 - [language-server-bitbake](https://www.npmjs.com/package/language-server-bitbake):
   another language server which use tree-sitter as its parser
+
+## Related Projects
+
 - [vscode-bitbake](https://github.com/savoirfairelinux/vscode-bitbake/): a VS
   Code extension for bitbake which use language-server-bitbake
 - [coc-bitbake](https://github.com/Freed-Wu/coc-bitbake): port vscode-bitbake
   to vim
+- [oelint-adv](https://github.com/priv-kweihmann/oelint-adv): the linter of
+  this project
